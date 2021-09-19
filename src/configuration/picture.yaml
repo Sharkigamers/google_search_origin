@@ -1,0 +1,46 @@
+picture_format:
+  - 'bmp'
+  - 'gif'
+  - 'png'
+  - 'jpg'
+  - 'svg'
+
+picture_size:
+  - 'icon'
+  - 'small'
+  - 'medium'
+  - 'large'
+  - 'xlarge'
+  - 'xxlarge'
+  - 'huge'
+
+picture_type:
+  - 'clipart'
+  - 'face'
+  - 'lineart'
+  - 'news'
+  - 'photo'
+
+picture_color_filter:
+  - 'mono'
+  - 'gray'
+  - 'color'
+
+picture_color:
+  - 'yellow'
+  - 'green'
+  - 'teal'
+  - 'blue'
+  - 'purple'
+  - 'pink'
+  - 'white'
+  - 'gray'
+  - 'black'
+  - 'brown'
+
+picture_right:
+  - 'cc_publicdomain'
+  - 'cc_attribute'
+  - 'cc_sharealike'
+  - 'cc_noncommercial'
+  - 'cc_nonderived'
