@@ -38,7 +38,7 @@ class GoogleSearchOriginTest(unittest.TestCase):
     
     def test_empty_search_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(search='').get_url(),
-        'https://www.google.com/search?q=')
+        'https://www.google.com')
 
     def test_none_search_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(search=None).get_url(),
@@ -92,6 +92,10 @@ class GoogleSearchOriginTest(unittest.TestCase):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(country='unknown').get_url(),
         'https://www.google.com')
 
+    def test_empty_country_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(country='').get_url(),
+        'https://www.google.com')
+
     def test_none_country_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(country=None).get_url(),
         'https://www.google.com')
@@ -136,6 +140,10 @@ class GoogleSearchOriginTest(unittest.TestCase):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(user_interface_language='unknown').get_url(),
         'https://www.google.com')
     
+    def test_empty_user_interface_language_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(user_interface_language='').get_url(),
+        'https://www.google.com')
+
     def test_none_user_interface_language_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(user_interface_language=None).get_url(),
         'https://www.google.com')
@@ -150,6 +158,10 @@ class GoogleSearchOriginTest(unittest.TestCase):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(and_operator='sun beach').get_url(),
         'https://www.google.com/search?hq=sun%20beach')
     
+    def test_empty_and_operator_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(and_operator='').get_url(),
+        'https://www.google.com')
+
     def test_none_and_operator_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(and_operator=None).get_url(),
         'https://www.google.com')
@@ -182,6 +194,10 @@ class GoogleSearchOriginTest(unittest.TestCase):
     
     def test_unknown_written_document_language_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(written_document_language='unknown').get_url(),
+        'https://www.google.com')
+
+    def test_empty_written_document_language_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(written_document_language='').get_url(),
         'https://www.google.com')
 
     def test_none_written_document_language_url(self):
@@ -240,6 +256,10 @@ class GoogleSearchOriginTest(unittest.TestCase):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(restrict_country='unknown').get_url(),
         'https://www.google.com')
 
+    def test_empty_restrict_country_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(restrict_country='').get_url(),
+        'https://www.google.com')
+
     def test_none_restrict_country_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(restrict_country=None).get_url(),
         'https://www.google.com')
@@ -283,6 +303,184 @@ class GoogleSearchOriginTest(unittest.TestCase):
     def test_none_start_page_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(start_page=None).get_url(),
         'https://www.google.com')
+    
+    ####################################################################################################################
+
+    def test_simple1_site_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(site='www.google.com').get_url(),
+        'https://www.google.com/search?as_sitesearch=www.google.com')
+    
+    def test_empty_site_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(site='').get_url(),
+        'https://www.google.com')
+
+    def test_none_site_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(site=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_enable_site_include_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(site='www.google.com', site_include=True).get_url(),
+        'https://www.google.com/search?as_sitesearch=www.google.com&as_dt=i')
+    
+    def test_disable_site_include_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(site='www.google.com', site_include=False).get_url(),
+        'https://www.google.com/search?as_sitesearch=www.google.com&as_dt=e')
+
+    def test_none_site_include_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(site='www.google.com', site_include=None).get_url(),
+        'https://www.google.com/search?as_sitesearch=www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_include_word_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(include_word='music').get_url(),
+        'https://www.google.com/search?as_epq=music')
+    
+    def test_empty_include_word_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(include_word='').get_url(),
+        'https://www.google.com')
+
+    def test_none_include_word_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(include_word=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_exclude_word_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(exclude_word='music').get_url(),
+        'https://www.google.com/search?as_eq=music')
+    
+    def test_empty_exclude_word_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(exclude_word='').get_url(),
+        'https://www.google.com')
+
+    def test_none_exclude_word_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(exclude_word=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_inclusive_search_range_start_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(inclusive_search_range_start=10).get_url(),
+        'https://www.google.com/search?as_nlo=10')
+    
+    def test_simple2_inclusive_search_range_start_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(inclusive_search_range_start=0).get_url(),
+        'https://www.google.com')
+
+    def test_simple3_inclusive_search_range_start_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(inclusive_search_range_start=-10).get_url(),
+        'https://www.google.com')
+
+    def test_none_inclusive_search_range_start_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(inclusive_search_range_start=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_inclusive_search_range_end_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(inclusive_search_range_end=20).get_url(),
+        'https://www.google.com/search?as_nhi=20')
+    
+    def test_simple2_inclusive_search_range_end_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(inclusive_search_range_end=0).get_url(),
+        'https://www.google.com')
+
+    def test_simple3_inclusive_search_range_end_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(inclusive_search_range_end=-20).get_url(),
+        'https://www.google.com')
+
+    def test_none_inclusive_search_range_end_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(inclusive_search_range_end=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_or_operator_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(or_operator='sheep').get_url(),
+        'https://www.google.com/search?as_oq=sheep')
+
+    def test_empty_or_operator_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(or_operator='').get_url(),
+        'https://www.google.com')
+
+    def test_none_or_operator_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(or_operator=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_additional_term_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(additional_term='sheep').get_url(),
+        'https://www.google.com/search?as_q=sheep')
+
+    def test_empty_additional_term_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(additional_term='').get_url(),
+        'https://www.google.com')
+
+    def test_none_additional_term_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(additional_term=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_day_from_date_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(from_date={'day': 10}).get_url(),
+        'https://www.google.com/search?as_qdr=d10')
+    
+    def test_week_from_date_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(from_date={'week': 10}).get_url(),
+        'https://www.google.com/search?as_qdr=w10')
+    
+    def test_month_from_date_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(from_date={'month': 10}).get_url(),
+        'https://www.google.com/search?as_qdr=m10')
+    
+    def test_year_from_date_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(from_date={'year': 10}).get_url(),
+        'https://www.google.com/search?as_qdr=y10')
+
+    def test_none_day_from_date_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(from_date={'day': None}).get_url(),
+        'https://www.google.com')
+    
+    def test_none_week_from_date_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(from_date={'week': None}).get_url(),
+        'https://www.google.com')
+    
+    def test_none_month_from_date_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(from_date={'month': None}).get_url(),
+        'https://www.google.com')
+    
+    def test_none_year_from_date_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(from_date={'year': None}).get_url(),
+        'https://www.google.com')
+
+    def test_empty_from_date_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(from_date={}).get_url(),
+        'https://www.google.com')
+
+    def test_none_from_date_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(from_date=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_related_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(related_url='www.github.com').get_url(),
+        'https://www.google.com/search?as_rq=www.github.com')
+
+    def test_empty_related_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(related_url='').get_url(),
+        'https://www.google.com')
+
+    def test_none_related_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(related_url=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
 
 if (__name__ == '__main__'):
     unittest.main()
