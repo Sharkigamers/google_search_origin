@@ -7,6 +7,34 @@ class GoogleSearchOriginTest(unittest.TestCase):
     
     ####################################################################################################################
 
+    def test_simple_base_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(base_url='www.yahoo.com').get_url(),
+        'https://www.yahoo.com')
+    
+    def test_empty_base_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(base_url='').get_url(),
+        'https://www.google.com')
+
+    def test_none_base_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(base_url=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple_search_type_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(search_type='imghp', search='sun').get_url(),
+        'https://www.google.com/imghp?q=sun')
+    
+    def test_empty_search_type_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(search_type='', search='sun').get_url(),
+        'https://www.google.com/search?q=sun')
+
+    def test_none_search_type_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(search_type=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
     def test_enable_ssl_certificate_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(ssl_certificate=True).get_url(),
         'https://www.google.com')
@@ -478,6 +506,238 @@ class GoogleSearchOriginTest(unittest.TestCase):
 
     def test_none_related_url_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(related_url=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_client_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(client='google-csbe').get_url(),
+        'https://www.google.com/search?client=google-csbe')
+
+    def test_empty_client_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(client='').get_url(),
+        'https://www.google.com')
+
+    def test_none_client_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(client=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_search_engine_code_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(search_engine_code='00255077836266642015:u-scht7a-8i')
+        .get_url(), 'https://www.google.com/search?cx=00255077836266642015:u-scht7a-8i')
+
+    def test_empty_search_engine_code_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(search_engine_code='').get_url(),
+        'https://www.google.com')
+
+    def test_none_search_engine_code_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(search_engine_code=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_boost_country_search_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(boost_country_search='fr').get_url(),
+        'https://www.google.com/search?gl=fr')
+    
+    def test_simple2_boost_country_search_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(boost_country_search='FR').get_url(),
+        'https://www.google.com/search?gl=fr')
+    
+    def test_unknown_boost_country_search_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(boost_country_search='unknown').get_url(),
+        'https://www.google.com')
+    
+    def test_empty_boost_country_search_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(boost_country_search='').get_url(),
+        'https://www.google.com')
+
+    def test_none_boost_country_search_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(boost_country_search=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_character_encoding_scheme_interpreter_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(character_encoding_scheme_interpreter='utf8')
+        .get_url(), 'https://www.google.com/search?ie=utf8')
+
+    def test_empty_character_encoding_scheme_interpreter_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(character_encoding_scheme_interpreter='').get_url(),
+        'https://www.google.com')
+
+    def test_none_character_encoding_scheme_interpreter_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(character_encoding_scheme_interpreter=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_character_encoding_scheme_decoder_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(character_encoding_scheme_decoder='utf8')
+        .get_url(), 'https://www.google.com/search?oe=utf8')
+
+    def test_empty_character_encoding_scheme_decoder_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(character_encoding_scheme_decoder='').get_url(),
+        'https://www.google.com')
+
+    def test_none_character_encoding_scheme_decoder_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(character_encoding_scheme_decoder=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_output_format_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(output_format='xml_no_dtd')
+        .get_url(), 'https://www.google.com/search?output=xml_no_dtd')
+    
+    def test_simple1_output_format_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(output_format='xml')
+        .get_url(), 'https://www.google.com/search?output=xml')
+
+    def test_empty_output_format_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(output_format='').get_url(),
+        'https://www.google.com')
+
+    def test_none_output_format_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(output_format=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_sort_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(sort='beach')
+        .get_url(), 'https://www.google.com/search?sort=beach')
+
+    def test_empty_sort_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(sort='').get_url(),
+        'https://www.google.com')
+
+    def test_none_sort_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(sort=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_enable_idn_encoded_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(idn_encoded_url=True).get_url(),
+        'https://www.google.com/search?ud=1')
+    
+    def test_disable_idn_encoded_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(idn_encoded_url=False).get_url(),
+        'https://www.google.com/search?ud=0')
+    
+    def test_none_idn_encoded_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(idn_encoded_url=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_picture_format_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_format='bmp')
+        .get_url(), 'https://www.google.com/search?as_filetype=bmp')
+    
+    def test_medium1_picture_format_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_format='BMP')
+        .get_url(), 'https://www.google.com/search?as_filetype=bmp')
+
+    def test_empty_picture_format_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_format='').get_url(),
+        'https://www.google.com')
+
+    def test_none_picture_format_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_format=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_picture_size_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_size='icon')
+        .get_url(), 'https://www.google.com/search?imgsz=icon')
+    
+    def test_medium1_picture_size_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_size='ICON')
+        .get_url(), 'https://www.google.com/search?imgsz=icon')
+
+    def test_empty_picture_size_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_size='').get_url(),
+        'https://www.google.com')
+
+    def test_none_picture_size_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_size=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_picture_type_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_type='face')
+        .get_url(), 'https://www.google.com/search?imgtype=face')
+    
+    def test_medium1_picture_type_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_type='FACE')
+        .get_url(), 'https://www.google.com/search?imgtype=face')
+
+    def test_empty_picture_type_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_type='').get_url(),
+        'https://www.google.com')
+
+    def test_none_picture_type_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_type=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_picture_color_filter_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_color_filter='mono')
+        .get_url(), 'https://www.google.com/search?imgc=mono')
+    
+    def test_medium1_picture_color_filter_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_color_filter='MONO')
+        .get_url(), 'https://www.google.com/search?imgc=mono')
+
+    def test_empty_picture_color_filter_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_color_filter='').get_url(),
+        'https://www.google.com')
+
+    def test_none_picture_color_filter_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_color_filter=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_picture_color_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_color='yellow')
+        .get_url(), 'https://www.google.com/search?imgcolor=yellow')
+    
+    def test_medium1_picture_color_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_color='YELLOW')
+        .get_url(), 'https://www.google.com/search?imgcolor=yellow')
+
+    def test_empty_picture_color_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_color='').get_url(),
+        'https://www.google.com')
+
+    def test_none_picture_color_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_color=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_picture_right_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_right='cc_attribute')
+        .get_url(), 'https://www.google.com/search?as_rights=cc_attribute')
+    
+    def test_medium1_picture_right_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_right='CC_ATTRIBUTE')
+        .get_url(), 'https://www.google.com/search?as_rights=cc_attribute')
+
+    def test_empty_picture_right_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_right='').get_url(),
+        'https://www.google.com')
+
+    def test_none_picture_right_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_right=None).get_url(),
         'https://www.google.com')
 
     ####################################################################################################################
