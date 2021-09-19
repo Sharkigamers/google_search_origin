@@ -1,4 +1,4 @@
-import src.google_search as google_search
+import src.google_search_origin as google_search_origin
 
 if __name__ == '__main__':
-    google_search.GoogleSearch()
+    google_search_origin.GoogleSearchOrigin()
