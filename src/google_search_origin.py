@@ -2,19 +2,34 @@ from typing import List
 import requests
 import src.common.yaml as google_serach_yaml
 
+
+####################################################################################################################
+#
+# Const variables
+#
+
+SAFETY_OFF: int = 0
+SAFETY_MEDIUM: int = 1
+SAFETY_HIGH: int = 2
+
+SITE_INCLUDE_INCLUDE: bool = True
+SITE_INCLUDE_EXCLUDE: bool = False
+
+FROM_DATE_DAY: str = 'day'
+FROM_DATE_WEEK: str = 'week'
+FROM_DATE_MONTH: str = 'month'
+FROM_DATE_YEAR: str = 'year'
+
+
 class GoogleSearchOrigin:
     ####################################################################################################################
     #
-    # Const variables
+    # Const Google Search Origin variables
     #
 
     __country_collection_values__: str = 'country_collection_values'
     __supported_interface_languages__: str = 'supported_interface_languages'
     __language_collection_values__: str = 'language_collection_values'
-
-    SAFETY_OFF: int = 0
-    SAFETY_MEDIUM: int = 1
-    SAFETY_HIGH: int = 2
 
     ####################################################################################################################
     #
@@ -24,12 +39,14 @@ class GoogleSearchOrigin:
     def __init__(self, ssl_certificate: bool = True, search: str = None, c2coff: bool = None, country: str = None,
     no_duplicate: bool = None, user_interface_language: str = None, and_operator: str = None,
     written_document_language: str = None, result_number: int = None, restrict_country: str = None, safety: int = None,
-    start_page: int = None, site: str = None, inclusion: bool = None, and_include_words: str = None,
-    exclusion_term: str = None, url_result: str = None):
+    start_page: int = None, site: str = None, site_include: bool = None, include_word: str = None,
+    exclude_word: str = None, url_link: str = None, inclusive_search_range_start: int = None,
+    inclusive_search_range_end: int = None, or_operator: str = None, additional_term: str = None,
+    from_date: dict = None, related_url: str = None):
         self.import_configuration()
 
-        self.url = 'www.google.com'
-        self.protocol = None
+        self.url: str = 'www.google.com'
+        self.protocol: str = None
         self.url_parameters: dict = {}
 
         self.parameter_ssl_certificate(ssl_certificate)
@@ -44,6 +61,17 @@ class GoogleSearchOrigin:
         self.parameter_country('restrict', restrict_country)
         self.parameter_safety(safety)
         self.parameter_start_page(start_page)
+        self.parameter_site(site)
+        self.parameter_site_include(site_include)
+        self.parameter_include_word(include_word)
+        self.parameter_exclude_word(exclude_word)
+        self.parameter_url_link(url_link)
+        self.parameter_inclusive_search_range_start(inclusive_search_range_start)
+        self.parameter_inclusive_search_range_end(inclusive_search_range_end)
+        self.parameter_or_operator(or_operator)
+        self.parameter_additional_term(additional_term)
+        self.parameter_from_date(from_date)
+        self.parameter_related_url(related_url)
 
         self.assemble_url()
 
@@ -63,7 +91,7 @@ class GoogleSearchOrigin:
                 self.protocol = 'http'
 
     def parameter_search(self, search: str) -> None:
-        if (search != None):
+        if (search):
             self.url_parameters['q'] = f'q={search}'
 
 
@@ -76,7 +104,7 @@ class GoogleSearchOrigin:
 
 
     def parameter_country(self, argument: str, country: str) -> None:
-        if (country != None):
+        if (country):
             if (len(country) == 2):
                 if (not country.isupper()):
                     country = f'country{country.upper()}'
@@ -97,7 +125,7 @@ class GoogleSearchOrigin:
                 self.url_parameters['filter'] = f'filter=1'
 
     def parameter_user_interface_language(self, user_interface_language: str) -> None:
-        if (user_interface_language != None):
+        if (user_interface_language):
             if (len(user_interface_language) == 2):
                 if (not user_interface_language.islower()):
                     user_interface_language = user_interface_language.lower()
@@ -114,7 +142,7 @@ class GoogleSearchOrigin:
                 self.url_parameters['hl'] = f'hl={user_interface_language}'
 
     def parameter_and_operator(self, and_operator: str):
-        if (and_operator != None):
+        if (and_operator):
             self.url_parameters['hq'] = f'hq={and_operator}'
 
     def parameter_written_document_language(self, written_document_language: str) -> None:
@@ -147,9 +175,68 @@ class GoogleSearchOrigin:
             elif (safety == 2):
                 self.url_parameters['safe'] = 'safe=high'
 
-    def parameter_start_page(self, start_page) -> None:
+    def parameter_start_page(self, start_page: int) -> None:
         if (start_page != None and start_page > 0):
             self.url_parameters['start'] = f'start={start_page}'
+
+    def parameter_site(self, site: str) -> None:
+        if (site):
+            self.url_parameters['site'] = f'as_sitesearch={site}'
+    
+    def parameter_site_include(self, site_include: bool) -> None:
+        if (site_include != None):
+            if (site_include):
+                self.url_parameters['site_include'] = 'as_dt=i'
+            else:
+                self.url_parameters['site_include'] = 'as_dt=e'
+    
+    def parameter_include_word(self, include_word: str) -> None:
+        if (include_word):
+            self.url_parameters['include_word'] = f'as_epq={include_word}'
+
+    def parameter_exclude_word(self, exclude_word: str) -> None:
+        if (exclude_word):
+            self.url_parameters['exclude_word'] = f'as_eq={exclude_word}'
+
+    def parameter_url_link(self, url_link: str) -> None:
+        if (url_link):
+            self.url_parameters['url_link'] = f'as_lq={url_link}'
+
+    def parameter_inclusive_search_range_start(self, inclusive_search_range_start: int) -> None:
+        if (inclusive_search_range_start != None and inclusive_search_range_start > 0):
+            self.url_parameters['inclusive_search_range_start'] = f'as_nlo={inclusive_search_range_start}'
+    
+    def parameter_inclusive_search_range_end(self, inclusive_search_range_end: int) -> None:
+        if (inclusive_search_range_end != None and inclusive_search_range_end > 0):
+            self.url_parameters['inclusive_search_range_end'] = f'as_nhi={inclusive_search_range_end}'
+
+    def parameter_or_operator(self, or_operator: str) -> None:
+        if (or_operator):
+            self.url_parameters['or_operator'] = f'as_oq={or_operator}'
+    
+    def parameter_additional_term(self, additional_term: str) -> None:
+        if (additional_term):
+            self.url_parameters['additional_term'] = f'as_q={additional_term}'
+
+    def parameter_from_date(self, from_date: dict) -> None:
+        if (from_date):
+            if (FROM_DATE_DAY in from_date and from_date[FROM_DATE_DAY] and from_date[FROM_DATE_DAY] >= 0):
+                self.url_parameters['from_date'] = f'as_qdr=d{from_date[FROM_DATE_DAY]}'
+            elif (FROM_DATE_WEEK in from_date and from_date[FROM_DATE_WEEK] and from_date[FROM_DATE_WEEK] >= 0):
+                self.url_parameters['from_date'] = f'as_qdr=w{from_date[FROM_DATE_WEEK]}'
+            elif (FROM_DATE_MONTH in from_date and from_date[FROM_DATE_MONTH] and from_date[FROM_DATE_MONTH] >= 0):
+                self.url_parameters['from_date'] = f'as_qdr=m{from_date[FROM_DATE_MONTH]}'
+            elif (FROM_DATE_YEAR in from_date and from_date[FROM_DATE_YEAR] and from_date[FROM_DATE_YEAR] >= 0):
+                self.url_parameters['from_date'] = f'as_qdr=y{from_date[FROM_DATE_YEAR]}'
+
+    def parameter_related_url(self, related_url: str) -> None:
+        if (related_url):
+            self.url_parameters['related_url'] = f'as_rq={related_url}'
+
+    ####################################################################################################################
+    #
+    # Assemble
+    #
 
     def assemble_url(self) -> None:
         if (self.protocol != None):
