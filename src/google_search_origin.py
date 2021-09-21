@@ -1,5 +1,8 @@
+import time
 from typing import Any, List
 import requests
+
+import bs4
 
 import src.common.yaml as google_serach_yaml
 
@@ -8,6 +11,8 @@ import src.common.yaml as google_serach_yaml
 #
 # Const variables
 #
+
+UNITTEST = False
 
 SAFETY_OFF: int = 0
 SAFETY_MEDIUM: int = 1
@@ -74,7 +79,9 @@ class GoogleSearchOrigin:
     dorks_word_in_title: list = None, dorks_words_in_title: list = None, dorks_word_in_url: list = None,
     dorks_words_in_url: list = None, dorks_info: list = None, dorks_cache: list = None, dorks_anchor: list = None,
     dorks_define: list = None, dorks_stocks: list = None, dorks_phonebook: list = None, dorks_maps: list = None,
-    dorks_book: list = None, dorks_movie: list = None, dorks_site: list = None):
+    dorks_book: list = None, dorks_movie: list = None, dorks_site: list = None, headers: dict = None,
+    proxies: dict = None, cookies: dict = None, timeout: int = None, allow_redirects: bool = None,
+    verify: Any = True, certificate: str = None, request_cooldown: float = None):
         self.configuration = {}
 
         self.url: str = None
@@ -84,7 +91,32 @@ class GoogleSearchOrigin:
         self.url_parameters: dict = {}
         self.dorks: dict = {}
 
+        self.headers: dict = {'User-Agent':
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+        'Chrome/61.0.3163.100 Safari/537.36'}
+        self.cookies: dict = {}
+        self.timeout: int = None
+        self.allow_redirects: bool = None
+        self.proxies: dict = {}
+        self.verify: bool = None
+        self.certificate: str = None
+        self.request_cooldown: float = 0
+        self.last_request: time = None
+
+        self.is_google_violated: bool = False
+
+        self.response = None
+
         self.import_configuration(self.__path_escaping_character__)
+
+        self.parameter_headers(headers)
+        self.parameter_cookies(cookies)
+        self.parameter_timeout(timeout)
+        self.parameter_allow_redirects(allow_redirects)
+        self.parameter_proxies(proxies)
+        self.parameter_verify(verify)
+        self.parameter_certificate(certificate)
+        self.parameter_request_cooldown(request_cooldown)
 
         self.parameter_search_type(search_type)
         self.parameter_filter(filter)
@@ -156,9 +188,109 @@ class GoogleSearchOrigin:
     def import_configuration(self, path: str) -> None:
         self.configuration.update(google_serach_yaml.Yaml().read_yaml(path))
 
+    def request_url(self):
+        if (not self.is_google_violated and
+        (not self.last_request or time.time() - self.last_request >= self.request_cooldown)):
+            self.last_request = time.time()
+            self.response = requests.get(url=self.url, headers=self.headers, cookies=self.cookies, timeout=self.timeout,
+            allow_redirects=self.allow_redirects, proxies=self.proxies, verify=self.verify, cert=self.certificate)
+            if (self.response.status_code == 429):
+                self.is_google_violated = True
+        else:
+            self.response = None
+
     ####################################################################################################################
     #
-    # Setup parameters
+    # Getters
+    #
+
+    def get_all_links(self) -> None:
+        if (self.get_response_is_ok()):
+            all_links = []
+            parsed_response = bs4.BeautifulSoup(self.get_response_text(), 'html.parser').find_all(
+            'div', attrs={'class': 'g'})
+            for div in parsed_response:
+                link = div.find('a', href=True)
+                title = div.find('h3')
+                if (link and title):
+                    all_links.append(link['href'])
+        return all_links
+
+    def get_response_status(self) -> int:
+        if (self.response):
+            return self.response.status_code
+
+    def get_response_text(self) -> str:
+        if (self.response):
+            return self.response.text
+    
+    def get_apparent_encoding(self) -> str:
+        if (self.response):
+            return self.response.apparent_encoding
+
+    def get_response_is_permanent_redirect(self) -> str:
+        if (self.response):
+            return self.response.is_permanent_redirect
+    
+    def get_response_is_redirect(self) -> str:
+        if (self.response):
+            return self.response.is_redirect
+    
+    def get_response_links(self) -> str:
+        if (self.response):
+            return self.response.links
+
+    def get_response_is_ok(self) -> str:
+        if (self.response):
+            return self.response.ok
+    
+    def get_response_text(self) -> str:
+        if (self.response):
+            return self.response.text
+
+    def get_reponse_raw(self) -> str:
+        if (self.response):
+            return self.response.raw
+
+    ####################################################################################################################
+    #
+    # Setup request parameters
+    #
+
+    def parameter_headers(self, headers: dict) -> None:
+        if (headers):
+            self.headers = headers
+
+    def parameter_cookies(self, cookies: dict) -> None:
+        if (cookies):
+            self.cookies = cookies
+
+    def parameter_timeout(self, timeout: int) -> None:
+        self.timeout = timeout
+
+    def parameter_allow_redirects(self, allow_redirects: bool) -> None:
+        if (allow_redirects != None):
+            self.allow_redirects = allow_redirects
+
+    def parameter_proxies(self, proxies: str) -> None:
+        if (proxies):
+            self.proxies = proxies
+
+    def parameter_verify(self, verify: Any) -> None:
+        self.verify = verify
+    
+    def parameter_certificate(self, certificate: str) -> None:
+        self.certificate = certificate
+
+    def parameter_request_cooldown(self, request_cooldown: int) -> None:
+        if (request_cooldown):
+            self.request_cooldown = request_cooldown
+        else:
+            self.request_cooldown = 0
+
+    ####################################################################################################################
+    #
+    # Setup URL parameters
     #
 
     def parameter_search_type(self, search_type: str) -> None:
