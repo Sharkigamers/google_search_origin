@@ -1,0 +1,5 @@
+[build-system]
+requires = [
+    "beautifulsoup4"
+]
+build-backend = "setuptools.build_meta"
