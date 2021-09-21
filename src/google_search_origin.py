@@ -1,3 +1,19 @@
+################################################################################
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
+################################################################################
+# Created Date: 21-09-14
+# Author: Gabriel Danjon
+# -----
+# Last Modified: 
+# Modified By: 
+# -----
+# Copyright (c) 2021 Da2ny's world
+# 
+# A clean code for a better programming
+# -----
+################################################################################
+
 import time
 from typing import Any, List
 import requests
@@ -6,25 +22,22 @@ import bs4
 
 import src.common.yaml as google_serach_yaml
 
-
-####################################################################################################################
+########################################################################################################################
 #
 # Const variables
 #
 
-UNITTEST = False
+GOOGLE_SEARCH_ORIGIN_SAFETY_OFF: int = 0
+GOOGLE_SEARCH_ORIGIN_SAFETY_MEDIUM: int = 1
+GOOGLE_SEARCH_ORIGIN_SAFETY_HIGH: int = 2
 
-SAFETY_OFF: int = 0
-SAFETY_MEDIUM: int = 1
-SAFETY_HIGH: int = 2
+GOOGLE_SEARCH_ORIGIN_SITE_INCLUDE_INCLUDE: bool = True
+GOOGLE_SEARCH_ORIGIN_SITE_INCLUDE_EXCLUDE: bool = False
 
-SITE_INCLUDE_INCLUDE: bool = True
-SITE_INCLUDE_EXCLUDE: bool = False
-
-FROM_DATE_DAY: str = 'day'
-FROM_DATE_WEEK: str = 'week'
-FROM_DATE_MONTH: str = 'month'
-FROM_DATE_YEAR: str = 'year'
+GOOGLE_SEARCH_ORIGIN_FROM_DATE_DAY: str = 'day'
+GOOGLE_SEARCH_ORIGIN_FROM_DATE_WEEK: str = 'week'
+GOOGLE_SEARCH_ORIGIN_FROM_DATE_MONTH: str = 'month'
+GOOGLE_SEARCH_ORIGIN_FROM_DATE_YEAR: str = 'year'
 
 
 class GoogleSearchOrigin:
@@ -32,6 +45,12 @@ class GoogleSearchOrigin:
     #
     # Const Google Search Origin variables
     #
+
+    VERSION: float = 1.0
+    VERSION_DATE: str = '21/09/2021'
+    PROGRAM_NAME: str = 'Google Search Origin'
+
+    UNITTEST = False
 
     __key_filter__: str = 'filter'
     __path_filter__: str = 'src/configuration/filter.yaml'
@@ -462,14 +481,18 @@ class GoogleSearchOrigin:
 
     def parameter_from_date(self, from_date: dict) -> None:
         if (from_date):
-            if (FROM_DATE_DAY in from_date and from_date[FROM_DATE_DAY] and from_date[FROM_DATE_DAY] >= 0):
-                self.url_parameters['as_qdr'] = f'd{from_date[FROM_DATE_DAY]}'
-            elif (FROM_DATE_WEEK in from_date and from_date[FROM_DATE_WEEK] and from_date[FROM_DATE_WEEK] >= 0):
-                self.url_parameters['as_qdr'] = f'w{from_date[FROM_DATE_WEEK]}'
-            elif (FROM_DATE_MONTH in from_date and from_date[FROM_DATE_MONTH] and from_date[FROM_DATE_MONTH] >= 0):
-                self.url_parameters['as_qdr'] = f'm{from_date[FROM_DATE_MONTH]}'
-            elif (FROM_DATE_YEAR in from_date and from_date[FROM_DATE_YEAR] and from_date[FROM_DATE_YEAR] >= 0):
-                self.url_parameters['as_qdr'] = f'y{from_date[FROM_DATE_YEAR]}'
+            if (GOOGLE_SEARCH_ORIGIN_FROM_DATE_DAY in from_date and from_date[GOOGLE_SEARCH_ORIGIN_FROM_DATE_DAY] and
+            from_date[GOOGLE_SEARCH_ORIGIN_FROM_DATE_DAY] >= 0):
+                self.url_parameters['as_qdr'] = f'd{from_date[GOOGLE_SEARCH_ORIGIN_FROM_DATE_DAY]}'
+            elif (GOOGLE_SEARCH_ORIGIN_FROM_DATE_WEEK in from_date and from_date[GOOGLE_SEARCH_ORIGIN_FROM_DATE_WEEK]
+            and from_date[GOOGLE_SEARCH_ORIGIN_FROM_DATE_WEEK] >= 0):
+                self.url_parameters['as_qdr'] = f'w{from_date[GOOGLE_SEARCH_ORIGIN_FROM_DATE_WEEK]}'
+            elif (GOOGLE_SEARCH_ORIGIN_FROM_DATE_MONTH in from_date and from_date[GOOGLE_SEARCH_ORIGIN_FROM_DATE_MONTH]
+            and from_date[GOOGLE_SEARCH_ORIGIN_FROM_DATE_MONTH] >= 0):
+                self.url_parameters['as_qdr'] = f'm{from_date[GOOGLE_SEARCH_ORIGIN_FROM_DATE_MONTH]}'
+            elif (GOOGLE_SEARCH_ORIGIN_FROM_DATE_YEAR in from_date and from_date[GOOGLE_SEARCH_ORIGIN_FROM_DATE_YEAR]
+            and from_date[GOOGLE_SEARCH_ORIGIN_FROM_DATE_YEAR] >= 0):
+                self.url_parameters['as_qdr'] = f'y{from_date[GOOGLE_SEARCH_ORIGIN_FROM_DATE_YEAR]}'
 
     def parameter_related_url(self, related_url: str) -> None:
         if (related_url):
