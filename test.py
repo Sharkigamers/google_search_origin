@@ -7,6 +7,42 @@ class GoogleSearchOriginTest(unittest.TestCase):
     
     ####################################################################################################################
 
+    def test_simple1_search_type_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(search_type='imghp').get_url(),
+        'https://www.google.com')
+
+    def test_simple2_search_type_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(search_type='imghp', search='dog').get_url(),
+        'https://www.google.com/imghp?q=dog')
+    
+    def test_empty1_search_type_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(search_type='imghp', search='').get_url(),
+        'https://www.google.com')
+
+    def test_empty2_search_type_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(search_type='').get_url(),
+        'https://www.google.com')
+
+    def test_none_search_type_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(search_type=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple_tbm_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(filter='isch').get_url(),
+        'https://www.google.com/search?tbm=isch')
+    
+    def test_empty_tbm_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(filter='').get_url(),
+        'https://www.google.com')
+
+    def test_none_tbm_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(filter=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
     def test_simple_base_url_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(base_url='www.yahoo.com').get_url(),
         'https://www.yahoo.com')
@@ -498,7 +534,7 @@ class GoogleSearchOriginTest(unittest.TestCase):
 
     def test_simple1_related_url_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(related_url='www.github.com').get_url(),
-        'https://www.google.com/search?as_rq=www.github.com')
+        'https://www.google.com/search?as_rq=www%2Egithub%2Ecom')
 
     def test_empty_related_url_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(related_url='').get_url(),
@@ -738,6 +774,458 @@ class GoogleSearchOriginTest(unittest.TestCase):
 
     def test_none_picture_right_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(picture_right=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_links_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_links=['www.google.com'])
+        .get_url(), 'https://www.google.com/search?q=link%3Awww%2Egoogle%2Ecom')
+    
+    def test_medium1_dorks_links_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_links=['www.google.com', 'www.yahoo.com'])
+        .get_url(), 'https://www.google.com/search?q=link%3Awww%2Egoogle%2Ecom%20link%3Awww%2Eyahoo%2Ecom')
+
+    def test_empty_dorks_links_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_links='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_links_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_links=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_or_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_or=['drum'])
+        .get_url(), 'https://www.google.com/search?q=drum')
+    
+    def test_medium1_dorks_or_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_or=['drum', 'music'])
+        .get_url(), 'https://www.google.com/search?q=drum%20OR%20music')
+
+    def test_empty_dorks_or_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_or='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_or_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_or=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_theme_exclusion_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_theme_exclusion=['bass'])
+        .get_url(), 'https://www.google.com/search?q=%2Dbass')
+    
+    def test_medium1_dorks_theme_exclusion_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_theme_exclusion=['bass', 'drum'])
+        .get_url(), 'https://www.google.com/search?q=%2Dbass%20%2Ddrum')
+
+    def test_empty_dorks_theme_exclusion_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_theme_exclusion='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_theme_exclusion_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_theme_exclusion=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_file_type_exclusion_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_file_type_exclusion=['PDF'])
+        .get_url(), 'https://www.google.com/search?q=%2Dfiletype%3APDF')
+    
+    def test_medium1_dorks_file_type_exclusion_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_file_type_exclusion=['PDF', 'DOC'])
+        .get_url(), 'https://www.google.com/search?q=%2Dfiletype%3APDF%20%2Dfiletype%3ADOC')
+
+    def test_empty_dorks_file_type_exclusion_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_file_type_exclusion='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_file_type_exclusion_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_file_type_exclusion=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_file_type_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_file_type=['PDF'])
+        .get_url(), 'https://www.google.com/search?q=filetype%3APDF')
+    
+    def test_medium1_dorks_file_type_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_file_type=['PDF', 'DOC'])
+        .get_url(), 'https://www.google.com/search?q=filetype%3APDF%20filetype%3ADOC')
+
+    def test_empty_dorks_file_type_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_file_type='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_file_type_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_file_type=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_and_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_and=['drum'])
+        .get_url(), 'https://www.google.com/search?q=drum')
+    
+    def test_medium1_dorks_and_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_and=['drum', 'bass'])
+        .get_url(), 'https://www.google.com/search?q=drum%2Bbass')
+
+    def test_empty_dorks_and_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_and='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_and_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_and=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_words_in_links_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_links=['pdf'])
+        .get_url(), 'https://www.google.com/search?q=allinlinks%3Apdf')
+    
+    def test_medium1_dorks_words_in_links_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_links=['pdf', 'doc'])
+        .get_url(), 'https://www.google.com/search?q=allinlinks%3Apdf%20allinlinks%3Adoc')
+
+    def test_empty_dorks_words_in_links_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_links='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_words_in_links_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_links=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_should_appear_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_should_appear=['pdf'])
+        .get_url(), 'https://www.google.com/search?q=%22pdf%22')
+    
+    def test_medium1_dorks_should_appear_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_should_appear=['pdf', 'doc'])
+        .get_url(), 'https://www.google.com/search?q=%22pdf%22%20%22doc%22')
+
+    def test_empty_dorks_should_appear_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_should_appear='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_should_appear_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_should_appear=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_related_links_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_related_links=['www.google.com'])
+        .get_url(), 'https://www.google.com/search?q=related%3Awww%2Egoogle%2Ecom')
+    
+    def test_medium1_dorks_related_links_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(
+        dorks_related_links=['www.google.com', 'www.yahoo.com'])
+        .get_url(), 'https://www.google.com/search?q=related%3Awww%2Egoogle%2Ecom%20related%3Awww%2Eyahoo%2Ecom')
+
+    def test_empty_dorks_related_links_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_related_links='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_related_links_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_related_links=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_words_in_text_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_text=['pdf'])
+        .get_url(), 'https://www.google.com/search?q=allintext%3Apdf')
+    
+    def test_medium1_dorks_words_in_text_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_text=['pdf', 'doc'])
+        .get_url(), 'https://www.google.com/search?q=allintext%3Apdf%20allintext%3Adoc')
+
+    def test_empty_dorks_words_in_text_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_text='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_words_in_text_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_text=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_word_in_title_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_word_in_title=['pdf'])
+        .get_url(), 'https://www.google.com/search?q=intitle%3Apdf')
+    
+    def test_medium1_dorks_word_in_title_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_word_in_title=['pdf', 'doc'])
+        .get_url(), 'https://www.google.com/search?q=intitle%3Apdf%20intitle%3Adoc')
+
+    def test_empty_dorks_word_in_title_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_word_in_title='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_word_in_title_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_word_in_title=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_words_in_title_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_title=['pdf'])
+        .get_url(), 'https://www.google.com/search?q=allintitle%3Apdf')
+    
+    def test_medium1_dorks_words_in_title_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_title=['pdf', 'doc'])
+        .get_url(), 'https://www.google.com/search?q=allintitle%3Apdf%20allintitle%3Adoc')
+
+    def test_empty_dorks_words_in_title_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_title='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_words_in_title_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_title=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_word_in_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_word_in_url=['pdf'])
+        .get_url(), 'https://www.google.com/search?q=inurl%3Apdf')
+    
+    def test_medium1_dorks_word_in_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_word_in_url=['pdf', 'doc'])
+        .get_url(), 'https://www.google.com/search?q=inurl%3Apdf%20inurl%3Adoc')
+
+    def test_empty_dorks_word_in_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_word_in_url='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_word_in_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_word_in_url=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_words_in_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_url=['pdf'])
+        .get_url(), 'https://www.google.com/search?q=allinurl%3Apdf')
+    
+    def test_medium1_dorks_words_in_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_url=['pdf', 'doc'])
+        .get_url(), 'https://www.google.com/search?q=allinurl%3Apdf%20allinurl%3Adoc')
+
+    def test_empty_dorks_words_in_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_url='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_words_in_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_url=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_words_in_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_url=['pdf'])
+        .get_url(), 'https://www.google.com/search?q=allinurl%3Apdf')
+    
+    def test_medium1_dorks_words_in_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_url=['pdf', 'doc'])
+        .get_url(), 'https://www.google.com/search?q=allinurl%3Apdf%20allinurl%3Adoc')
+
+    def test_empty_dorks_words_in_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_url='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_words_in_url_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_words_in_url=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_info_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_info=['www.google.com'])
+        .get_url(), 'https://www.google.com/search?q=info%3Awww%2Egoogle%2Ecom')
+    
+    def test_medium1_dorks_info_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_info=['www.google.com', 'www.yahoo.com'])
+        .get_url(), 'https://www.google.com/search?q=info%3Awww%2Egoogle%2Ecom%20info%3Awww%2Eyahoo%2Ecom')
+
+    def test_empty_dorks_info_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_info='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_info_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_info=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_cache_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_cache=['securitytrails.com'])
+        .get_url(), 'https://www.google.com/search?q=cache%3Asecuritytrails%2Ecom')
+    
+    def test_medium1_dorks_cache_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(
+        dorks_cache=['securitytrails.com', 'google.com'])
+        .get_url(), 'https://www.google.com/search?q=cache%3Asecuritytrails%2Ecom%20cache%3Agoogle%2Ecom')
+
+    def test_empty_dorks_cache_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_cache='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_cache_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_cache=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_anchor_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_anchor=['cyber'])
+        .get_url(), 'https://www.google.com/search?q=inanchor%3Acyber')
+    
+    def test_medium1_dorks_anchor_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_anchor=['cyber', 'security'])
+        .get_url(), 'https://www.google.com/search?q=inanchor%3Acyber%20inanchor%3Asecurity')
+
+    def test_empty_dorks_anchor_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_anchor='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_anchor_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_anchor=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_define_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_define=['cyber'])
+        .get_url(), 'https://www.google.com/search?q=define%3Acyber')
+    
+    def test_medium1_dorks_define_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_define=['cyber', 'security'])
+        .get_url(), 'https://www.google.com/search?q=define%3Acyber%20define%3Asecurity')
+
+    def test_empty_dorks_define_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_define='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_define_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_define=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_stocks_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_stocks=['cyber'])
+        .get_url(), 'https://www.google.com/search?q=stocks%3Acyber')
+    
+    def test_medium1_dorks_stocks_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_stocks=['cyber', 'security'])
+        .get_url(), 'https://www.google.com/search?q=stocks%3Acyber%20stocks%3Asecurity')
+
+    def test_empty_dorks_stocks_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_stocks='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_stocks_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_stocks=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_phonebook_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_phonebook=['101111111111'])
+        .get_url(), 'https://www.google.com/search?q=phonebook%3A101111111111')
+    
+    def test_medium1_dorks_phonebook_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_phonebook=['101111111111', '066666666666'])
+        .get_url(), 'https://www.google.com/search?q=phonebook%3A101111111111%20phonebook%3A066666666666')
+
+    def test_empty_dorks_phonebook_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_phonebook='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_phonebook_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_phonebook=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_maps_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_maps=['London'])
+        .get_url(), 'https://www.google.com/search?q=maps%3ALondon')
+    
+    def test_medium1_dorks_maps_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_maps=['London', 'Madrid'])
+        .get_url(), 'https://www.google.com/search?q=maps%3ALondon%20maps%3AMadrid')
+
+    def test_empty_dorks_maps_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_maps='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_maps_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_maps=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_book_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_book=['MyHeroAcademia'])
+        .get_url(), 'https://www.google.com/search?q=book%3AMyHeroAcademia')
+    
+    def test_medium1_dorks_book_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_book=['MyHeroAcademia', 'Deku'])
+        .get_url(), 'https://www.google.com/search?q=book%3AMyHeroAcademia%20book%3ADeku')
+
+    def test_empty_dorks_book_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_book='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_book_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_book=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_movie_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_movie=['StarWars'])
+        .get_url(), 'https://www.google.com/search?q=movie%3AStarWars')
+    
+    def test_medium1_dorks_movie_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_movie=['StarWars', 'KingKong'])
+        .get_url(), 'https://www.google.com/search?q=movie%3AStarWars%20movie%3AKingKong')
+
+    def test_empty_dorks_movie_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_movie='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_movie_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_movie=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
+    def test_simple1_dorks_site_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_site=['www.github.com'])
+        .get_url(), 'https://www.google.com/search?q=site%3Awww%2Egithub%2Ecom')
+    
+    def test_medium1_dorks_site_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_site=['www.github.com', 'www.google.com'])
+        .get_url(), 'https://www.google.com/search?q=site%3Awww%2Egithub%2Ecom%20site%3Awww%2Egoogle%2Ecom')
+
+    def test_empty_dorks_site_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_site='').get_url(),
+        'https://www.google.com')
+
+    def test_none_dorks_site_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_site=None).get_url(),
         'https://www.google.com')
 
     ####################################################################################################################

@@ -28,6 +28,8 @@ class GoogleSearchOrigin:
     # Const Google Search Origin variables
     #
 
+    __key_filter__: str = 'filter'
+    __path_filter__: str = 'src/configuration/filter.yaml'
     __key_tag_to_escape__: str = 'tag_to_escape'
     __key_escaping_character__: str = 'escaping_character'
     __path_escaping_character__: str = 'src/configuration/escaping_character.yaml'
@@ -54,10 +56,10 @@ class GoogleSearchOrigin:
     # Initialisation
     #
 
-    def __init__(self, search_type: str = 'search', base_url: str = 'www.google.com', ssl_certificate: bool = True,
-    search: str = None, c2coff: bool = None, country: str = None, no_duplicate: bool = None,
-    user_interface_language: str = None, and_operator: str = None, written_document_language: str = None,
-    result_number: int = None, restrict_country: str = None, safety: int = None,
+    def __init__(self, search_type: str = 'search', filter: str = None, base_url: str = 'www.google.com',
+    ssl_certificate: bool = True, search: str = None, c2coff: bool = None, country: str = None,
+    no_duplicate: bool = None, user_interface_language: str = None, and_operator: str = None,
+    written_document_language: str = None, result_number: int = None, restrict_country: str = None, safety: int = None,
     start_page: int = None, site: str = None, site_include: bool = None, include_word: str = None,
     exclude_word: str = None, url_link: str = None, inclusive_search_range_start: int = None,
     inclusive_search_range_end: int = None, or_operator: str = None, additional_term: str = None,
@@ -65,7 +67,14 @@ class GoogleSearchOrigin:
     boost_country_search: str = None, character_encoding_scheme_interpreter: str = None,
     character_encoding_scheme_decoder: str = None, output_format: str = None, sort: str = None,
     idn_encoded_url: bool = None, picture_format: str = None, picture_size: str = None, picture_type: str = None,
-    picture_color_filter: str = None, picture_color: str = None, picture_right: str = None):
+    picture_color_filter: str = None, picture_color: str = None, picture_right: str = None, dorks_links: list = None,
+    dorks_or: list = None, dorks_theme_exclusion: list = None, dorks_file_type_exclusion: list = None,
+    dorks_file_type: list = None, dorks_and: list = None, dorks_words_in_links: list = None,
+    dorks_should_appear: list = None, dorks_related_links: list = None, dorks_words_in_text: list = None,
+    dorks_word_in_title: list = None, dorks_words_in_title: list = None, dorks_word_in_url: list = None,
+    dorks_words_in_url: list = None, dorks_info: list = None, dorks_cache: list = None, dorks_anchor: list = None,
+    dorks_define: list = None, dorks_stocks: list = None, dorks_phonebook: list = None, dorks_maps: list = None,
+    dorks_book: list = None, dorks_movie: list = None, dorks_site: list = None):
         self.configuration = {}
 
         self.url: str = None
@@ -73,11 +82,13 @@ class GoogleSearchOrigin:
         self.search_type: str = None
         self.protocol: str = None
         self.url_parameters: dict = {}
+        self.dorks: dict = {}
 
         self.import_configuration(self.__path_escaping_character__)
 
-        self.parameter_url_base_url(base_url)
         self.parameter_search_type(search_type)
+        self.parameter_filter(filter)
+        self.parameter_base_url(base_url)
         self.parameter_ssl_certificate(ssl_certificate)
         self.parameter_search(search)
         self.parameter_c2coff(c2coff)
@@ -115,6 +126,30 @@ class GoogleSearchOrigin:
         self.parameter_picture_color_filter(picture_color_filter)
         self.parameter_picture_color(picture_color)
         self.parameter_picture_right(picture_right)
+        self.parameter_dorks_links(dorks_links)
+        self.parameter_dorks_or(dorks_or)
+        self.parameter_dorks_theme_exclusion(dorks_theme_exclusion)
+        self.parameter_dorks_file_type_exclusion(dorks_file_type_exclusion)
+        self.parameter_dorks_file_type(dorks_file_type)
+        self.parameter_dorks_and(dorks_and)
+        self.parameter_dorks_words_in_links(dorks_words_in_links)
+        self.parameter_dorks_should_appear(dorks_should_appear)
+        self.parameter_dorks_related_links(dorks_related_links)
+        self.parameter_dorks_words_in_text(dorks_words_in_text)
+        self.parameter_dorks_word_in_title(dorks_word_in_title)
+        self.parameter_dorks_words_in_title(dorks_words_in_title)
+        self.parameter_dorks_word_in_url(dorks_word_in_url)
+        self.parameter_dorks_words_in_url(dorks_words_in_url)
+        self.parameter_dorks_info(dorks_info)
+        self.parameter_dorks_cache(dorks_cache)
+        self.parameter_dorks_anchor(dorks_anchor)
+        self.parameter_dorks_define(dorks_define)
+        self.parameter_dorks_stocks(dorks_stocks)
+        self.parameter_dorks_phonebook(dorks_phonebook)
+        self.parameter_dorks_maps(dorks_maps)
+        self.parameter_dorks_book(dorks_book)
+        self.parameter_dorks_movie(dorks_movie)
+        self.parameter_dorks_site(dorks_site)
 
         self.assemble_url()
 
@@ -126,17 +161,25 @@ class GoogleSearchOrigin:
     # Setup parameters
     #
 
-    def parameter_url_base_url(self, base_url):
-        if (base_url):
-            self.base_url = base_url
-        else:
-            self.base_url = 'www.google.com'
-
-    def parameter_search_type(self, search_type):
+    def parameter_search_type(self, search_type: str) -> None:
         if (search_type):
             self.search_type = search_type
         else:
             self.search_type = 'search'
+
+    def parameter_filter(self, filter: str) -> None:
+        if (filter):
+            if (self.__key_filter__ not in self.configuration):
+                self.import_configuration(self.__path_filter__)
+            
+            if (filter in self.configuration[self.__key_filter__]):
+                self.url_parameters['tbm'] = filter
+
+    def parameter_base_url(self, base_url: str) -> None:
+        if (base_url):
+            self.base_url = base_url
+        else:
+            self.base_url = 'www.google.com'
 
     def parameter_ssl_certificate(self, ssl_certificate: bool) -> None:
         if (ssl_certificate != None):
@@ -397,6 +440,146 @@ class GoogleSearchOrigin:
             if (picture_right in self.configuration[self.__key_picture_right__]):
                  self.url_parameters['as_rights'] = picture_right
 
+    def parameter_dorks_links(self, dorks_links: list) -> None:
+        if (dorks_links):
+            for index in range(len(dorks_links)):
+                dorks_links[index] = f'link:{dorks_links[index]}'
+            self.dorks['link'] = ' '.join(dorks_links)
+    
+    def parameter_dorks_or(self, dorks_or: list) -> None:
+        if (dorks_or):
+            self.dorks['or'] = ' OR '.join(dorks_or)
+    
+    def parameter_dorks_theme_exclusion(self, dorks_theme_exclusion: list) -> None:
+        if (dorks_theme_exclusion):
+            for index in range(len(dorks_theme_exclusion)):
+                dorks_theme_exclusion[index] = f'-{dorks_theme_exclusion[index]}'
+            self.dorks['-'] = ' '.join(dorks_theme_exclusion)
+    
+    def parameter_dorks_file_type_exclusion(self, dorks_file_type_exclusion: list) -> None:
+        if (dorks_file_type_exclusion):
+            for index in range(len(dorks_file_type_exclusion)):
+                dorks_file_type_exclusion[index] = f'-filetype:{dorks_file_type_exclusion[index]}'
+            self.dorks['-filetype'] = ' '.join(dorks_file_type_exclusion)
+
+    def parameter_dorks_file_type(self, dorks_file_type: list) -> None:
+        if (dorks_file_type):
+            for index in range(len(dorks_file_type)):
+                dorks_file_type[index] = f'filetype:{dorks_file_type[index]}'
+            self.dorks['filetype'] = ' '.join(dorks_file_type)
+
+    def parameter_dorks_and(self, dorks_and: list) -> None:
+        if (dorks_and):
+            self.dorks['+'] = '+'.join(dorks_and)
+    
+    def parameter_dorks_words_in_links(self, dorks_words_in_links: list) -> None:
+        if (dorks_words_in_links):
+            for index in range(len(dorks_words_in_links)):
+                dorks_words_in_links[index] = f'allinlinks:{dorks_words_in_links[index]}'
+            self.dorks['allinlinks'] = ' '.join(dorks_words_in_links)
+    
+    def parameter_dorks_should_appear(self, dorks_should_appear: list) -> None:
+        if (dorks_should_appear):
+            for index in range(len(dorks_should_appear)):
+                dorks_should_appear[index] = f'"{dorks_should_appear[index]}"'
+            self.dorks['""'] = ' '.join(dorks_should_appear)
+    
+    def parameter_dorks_related_links(self, dorks_related_links: list) -> None:
+        if (dorks_related_links):
+            for index in range(len(dorks_related_links)):
+                dorks_related_links[index] = f'related:{dorks_related_links[index]}'
+            self.dorks['related'] = ' '.join(dorks_related_links)
+    
+    def parameter_dorks_words_in_text(self, dorks_words_in_text: list) -> None:
+        if (dorks_words_in_text):
+            for index in range(len(dorks_words_in_text)):
+                dorks_words_in_text[index] = f'allintext:{dorks_words_in_text[index]}'
+            self.dorks['allintext'] = ' '.join(dorks_words_in_text)
+    
+    def parameter_dorks_word_in_title(self, dorks_word_in_title: list) -> None:
+        if (dorks_word_in_title):
+            for index in range(len(dorks_word_in_title)):
+                dorks_word_in_title[index] = f'intitle:{dorks_word_in_title[index]}'
+            self.dorks['intitle'] = ' '.join(dorks_word_in_title)
+        
+    def parameter_dorks_words_in_title(self, dorks_words_in_title: list) -> None:
+        if (dorks_words_in_title):
+            for index in range(len(dorks_words_in_title)):
+                dorks_words_in_title[index] = f'allintitle:{dorks_words_in_title[index]}'
+            self.dorks['allintitle'] = ' '.join(dorks_words_in_title)
+    
+    def parameter_dorks_word_in_url(self, dorks_word_in_url: list) -> None:
+        if (dorks_word_in_url):
+            for index in range(len(dorks_word_in_url)):
+                dorks_word_in_url[index] = f'inurl:{dorks_word_in_url[index]}'
+            self.dorks['inurl'] = ' '.join(dorks_word_in_url)
+    
+    def parameter_dorks_words_in_url(self, dorks_words_in_url: list) -> None:
+        if (dorks_words_in_url):
+            for index in range(len(dorks_words_in_url)):
+                dorks_words_in_url[index] = f'allinurl:{dorks_words_in_url[index]}'
+            self.dorks['allinurl'] = ' '.join(dorks_words_in_url)
+    
+    def parameter_dorks_info(self, dorks_info: list) -> None:
+        if (dorks_info):
+            for index in range(len(dorks_info)):
+                dorks_info[index] = f'info:{dorks_info[index]}'
+            self.dorks['info'] = ' '.join(dorks_info)
+    
+    def parameter_dorks_cache(self, dorks_cache: list) -> None:
+        if (dorks_cache):
+            for index in range(len(dorks_cache)):
+                dorks_cache[index] = f'cache:{dorks_cache[index]}'
+            self.dorks['cache'] = ' '.join(dorks_cache)
+    
+    def parameter_dorks_anchor(self, dorks_anchor: list) -> None:
+        if (dorks_anchor):
+            for index in range(len(dorks_anchor)):
+                dorks_anchor[index] = f'inanchor:{dorks_anchor[index]}'
+            self.dorks['inanchor'] = ' '.join(dorks_anchor)
+
+    def parameter_dorks_define(self, dorks_define: list) -> None:
+        if (dorks_define):
+            for index in range(len(dorks_define)):
+                dorks_define[index] = f'define:{dorks_define[index]}'
+            self.dorks['define'] = ' '.join(dorks_define)
+
+    def parameter_dorks_stocks(self, dorks_stocks: list) -> None:
+        if (dorks_stocks):
+            for index in range(len(dorks_stocks)):
+                dorks_stocks[index] = f'stocks:{dorks_stocks[index]}'
+            self.dorks['stocks'] = ' '.join(dorks_stocks)
+
+    def parameter_dorks_phonebook(self, dorks_phonebook: list) -> None:
+        if (dorks_phonebook):
+            for index in range(len(dorks_phonebook)):
+                dorks_phonebook[index] = f'phonebook:{dorks_phonebook[index]}'
+            self.dorks['phonebook'] = ' '.join(dorks_phonebook)
+    
+    def parameter_dorks_maps(self, dorks_maps: list) -> None:
+        if (dorks_maps):
+            for index in range(len(dorks_maps)):
+                dorks_maps[index] = f'maps:{dorks_maps[index]}'
+            self.dorks['maps'] = ' '.join(dorks_maps)
+    
+    def parameter_dorks_book(self, dorks_book: list) -> None:
+        if (dorks_book):
+            for index in range(len(dorks_book)):
+                dorks_book[index] = f'book:{dorks_book[index]}'
+            self.dorks['book'] = ' '.join(dorks_book)
+    
+    def parameter_dorks_movie(self, dorks_movie: list) -> None:
+        if (dorks_movie):
+            for index in range(len(dorks_movie)):
+                dorks_movie[index] = f'movie:{dorks_movie[index]}'
+            self.dorks['movie'] = ' '.join(dorks_movie)
+
+    def parameter_dorks_site(self, dorks_site: list) -> None:
+        if (dorks_site):
+            for index in range(len(dorks_site)):
+                dorks_site[index] = f'site:{dorks_site[index]}'
+            self.dorks['site'] = ' '.join(dorks_site)
+
     ####################################################################################################################
     #
     # Assemble
@@ -406,12 +589,17 @@ class GoogleSearchOrigin:
         self.url = self.base_url
         if (self.protocol != None):
             self.url = '{protocol}://{url}'.format(protocol=self.protocol, url=self.url)
-        if (self.url_parameters != {}):
+        if (self.url_parameters != {} or self.dorks != {}):
             self.url = '{url_prefix}/{search_type}?{url_parameters}'.format(url_prefix=self.url,
             search_type=self.search_type, url_parameters=self.encode_url(self.url_parameters))
 
     def encode_url(self, parameters: dict) -> str:
         encoded_url = ''
+        if (self.dorks):
+            if ('q' in parameters):
+                parameters['q'] = f'{" ".join(self.dorks.values())} {parameters["q"]}'
+            else:
+                parameters['q'] = f'{" ".join(self.dorks.values())}'
         for to_escape_tag in self.configuration[self.__key_tag_to_escape__]:
             if (to_escape_tag in parameters):
                 for to_escape_character in self.configuration[self.__key_escaping_character__]:

@@ -5,6 +5,7 @@ tag_to_escape:
   - 'as_eq'
   - 'as_oq'
   - 'as_q'
+  - 'as_rq'
   - 'sort'
 
 escaping_character:

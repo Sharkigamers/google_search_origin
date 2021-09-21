@@ -1,0 +1,12 @@
+filter:
+  - 'app'
+  - 'blg'
+  - 'bks'
+  - 'dsc'
+  - 'isch'
+  - 'nws'
+  - 'pts'
+  - 'plcs'
+  - 'rcp'
+  - 'shop'
+  - 'vid'
