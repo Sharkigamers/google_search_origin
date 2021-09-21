@@ -46,7 +46,7 @@ class GoogleSearchOrigin:
     # Const Google Search Origin variables
     #
 
-    VERSION: float = 1.0
+    VERSION: str = '1.0.0'
     VERSION_DATE: str = '21/09/2021'
     PROGRAM_NAME: str = 'Google Search Origin'
 
