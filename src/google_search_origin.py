@@ -47,7 +47,7 @@ class GoogleSearchOrigin:
     #
 
     AUTHOR: str = 'Da2ny'
-    VERSION: str = '1.1.4'
+    VERSION: str = '1.1.5'
     VERSION_DATE: str = '2021-03-10'
     PROGRAM_NAME: str = 'Google Search Origin'
 
