@@ -39,7 +39,7 @@ def get_long_description():
 
 setuptools.setup(
     name='google-search-origin',
-    version=get_version('google_search_origin.py'),
+    version='1.1.5',
     author='Da2ny',
     author_email='da2nydeveloper@gmail.com',
     description='Google Search Origin is used to search efficacy on Google. It is also used to scrap URL from google',
