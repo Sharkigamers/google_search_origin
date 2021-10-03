@@ -1,9 +1,9 @@
 # Google Search Origin
 
-Google Search Origin is library for searching via requests (like on Google).
-Google Search Origin uses requests and BeautifulSoup4.
+Google Search Origin is a library for searching via requests (like on Google).
+Google Search Origin uses `requests` and `BeautifulSoup4`.
 Its main functionnality is used to scrap google.
-It can do so much more thanks to the various parameters available.
+It can do so much more thanks to the various parameters available on it.
 
 ## Installation
 
@@ -23,8 +23,11 @@ To get results for a search.
 - You have to request the url with the method `request_url`.
 - You can collect the output using, for example `get_all_links` if you only want links.
 
+After that you can modify and remove the parameters with the methods of your need.
+When you're modifying the parameters you have assemble the url with the method `assemble_url`.
+
 ```
-import src.google_search_origin as google_search_origin
+import google_search_origin
 
 
 if __name__ == '__main__':
@@ -175,6 +178,14 @@ Google Search Origin has a lot of parameters. Here the list explained below :
 - verify (Any): True to enable / False to disable the verification of ssl_certificate
 - certificate (str): To add a certificate
 - request_cooldown (float): Cooldown between each request
+
+To more understand how using the url parameters, here some unittests: https://github.com/Sharkigamers/google_search_origin/blob/master/test.py
+
+For the request parameters, it doesn't differs from the original library.
+
+For more information on the google dorks, here the official google documentation:
+https://developers.google.com/resources/api-libraries/documentation/customsearch/v1/csharp/latest/classGoogle_1_1Apis_1_1Customsearch_1_1v1_1_1CseResource_1_1ListRequest-members.html
+https://developers.google.com/custom-search/docs/xml_results#clientsp
 
 ## Default values
 

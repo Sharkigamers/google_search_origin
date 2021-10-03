@@ -46,8 +46,9 @@ class GoogleSearchOrigin:
     # Const Google Search Origin variables
     #
 
-    VERSION: str = '1.0.0'
-    VERSION_DATE: str = '21/09/2021'
+    AUTHOR: str = 'Da2ny'
+    VERSION: str = '1.1.2'
+    VERSION_DATE: str = '2021-03-10'
     PROGRAM_NAME: str = 'Google Search Origin'
 
     UNITTEST = False
