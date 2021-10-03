@@ -14,7 +14,7 @@
 # -----
 ################################################################################
 
-import src.google_search_origin as google_search_origin
+import google_search_origin
 
 
 if __name__ == '__main__':
