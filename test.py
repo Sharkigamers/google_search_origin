@@ -74,20 +74,6 @@ class GoogleSearchOriginTest(unittest.TestCase):
 
     ####################################################################################################################
 
-    def test_simple_search_type_url(self):
-        self.assertEqual(google_search_origin.GoogleSearchOrigin(search_type='imghp', search='sun').get_url(),
-        'https://www.google.com/imghp?q=sun')
-    
-    def test_empty_search_type_url(self):
-        self.assertEqual(google_search_origin.GoogleSearchOrigin(search_type='', search='sun').get_url(),
-        'https://www.google.com/search?q=sun')
-
-    def test_none_search_type_url(self):
-        self.assertEqual(google_search_origin.GoogleSearchOrigin(search_type=None).get_url(),
-        'https://www.google.com')
-
-    ####################################################################################################################
-
     def test_enable_ssl_certificate_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(ssl_certificate=True).get_url(),
         'https://www.google.com')
@@ -129,7 +115,7 @@ class GoogleSearchOriginTest(unittest.TestCase):
 
     def test_enable_c2coff_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(c2coff=True).get_url(),
-        'https://www.google.com/search?c2coff=2')
+        'https://www.google.com/search?c2coff=0')
     
     def test_disable_c2coff_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(c2coff=False).get_url(),
@@ -443,6 +429,20 @@ class GoogleSearchOriginTest(unittest.TestCase):
 
     ####################################################################################################################
 
+    def test_simple1_url_link_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(url_link='www.google.com').get_url(),
+        'https://www.google.com/search?as_lq=www.google.com')
+    
+    def test_empty_url_link_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(url_link='').get_url(),
+        'https://www.google.com')
+
+    def test_none_url_link_url(self):
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(url_link=None).get_url(),
+        'https://www.google.com')
+
+    ####################################################################################################################
+
     def test_simple1_inclusive_search_range_start_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(inclusive_search_range_start=10).get_url(),
         'https://www.google.com/search?as_nlo=10')
@@ -660,8 +660,8 @@ class GoogleSearchOriginTest(unittest.TestCase):
     ####################################################################################################################
 
     def test_simple1_sort_url(self):
-        self.assertEqual(google_search_origin.GoogleSearchOrigin(sort='beach')
-        .get_url(), 'https://www.google.com/search?sort=beach')
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(sort='date')
+        .get_url(), 'https://www.google.com/search?sort=date')
 
     def test_empty_sort_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(sort='').get_url(),
@@ -940,13 +940,13 @@ class GoogleSearchOriginTest(unittest.TestCase):
     ####################################################################################################################
 
     def test_simple1_dorks_related_links_url(self):
-        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_related_links=['www.google.com'])
-        .get_url(), 'https://www.google.com/search?q=related%3Awww%2Egoogle%2Ecom')
+        self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_related_links=['www.example.com'])
+        .get_url(), 'https://www.google.com/search?q=related%3Awww%2Eexample%2Ecom')
     
     def test_medium1_dorks_related_links_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(
-        dorks_related_links=['www.google.com', 'www.yahoo.com'])
-        .get_url(), 'https://www.google.com/search?q=related%3Awww%2Egoogle%2Ecom%20related%3Awww%2Eyahoo%2Ecom')
+        dorks_related_links=['www.example.com', 'www.yahoo.com'])
+        .get_url(), 'https://www.google.com/search?q=related%3Awww%2Eexample%2Ecom%20related%3Awww%2Eyahoo%2Ecom')
 
     def test_empty_dorks_related_links_url(self):
         self.assertEqual(google_search_origin.GoogleSearchOrigin(dorks_related_links='').get_url(),

@@ -21,12 +21,18 @@ with open('README.md', 'r', encoding='utf-8') as fh:
 
 setuptools.setup(
     name='google-search-origin',
-    version='1.0.0',
+    version='1.0.1',
     author='Da2ny',
     author_email='da2nydeveloper@gmail.com',
     description='Google Search Origin is used to search efficacy on Google. It is also used to scrap URL from google',
-    long_description=('Google Search Origin encapsulate Request and BeautifulSoap libraries to collect data from the internet.'
-    'It can generate url throught data passed as parameter. Its main functionnality would be for scraping'),
+    long_description=(
+        '''
+Google Search Origin is library for searching via requests (like on Google).
+Google Search Origin uses requests and BeautifulSoup4.
+Its main functionnality is used to scrap google.
+It can do so much more thanks to the various parameters available.
+        '''
+    ),
     long_description_content_type='text/markdown',
     url='https://github.com/Sharkigamers/google_search_origin',
     project_urls={
