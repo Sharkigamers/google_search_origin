@@ -14,18 +14,22 @@
 # -----
 ################################################################################
 
+from genericpath import isfile
+from os import path
 import setuptools
 
 def get_version(relpath):
     """read version info from file without importing it"""
     from os.path import dirname, join
-    for line in open(join(dirname(__file__), relpath)):
-        if '__version__' in line:
-            if '"' in line:
-                # __version__ = "0.9"
-                return line.split('"')[1]
-            elif "'" in line:
-                return line.split("'")[1]
+    file_path = join(dirname(__file__), join('src', relpath))
+    if (path.isfile(file_path)):
+        for line in open(file_path, 'r'):
+            if 'VERSION: str = ' in line:
+                if '"' in line:
+                    # VERSION: str = '1.0.0'
+                    return line.split('"')[1]
+                elif "'" in line:
+                    return line.split('\'')[1]
 
 def get_long_description():
   long_description = ''
@@ -35,7 +39,7 @@ def get_long_description():
 
 setuptools.setup(
     name='google-search-origin',
-    version=get_version('src/google_search_origin.py'),
+    version=get_version('google_search_origin.py'),
     author='Da2ny',
     author_email='da2nydeveloper@gmail.com',
     description='Google Search Origin is used to search efficacy on Google. It is also used to scrap URL from google',
