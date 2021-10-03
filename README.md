@@ -176,6 +176,7 @@ Google Search Origin has a lot of parameters. Here the list explained below :
 - timeout (int): Delay for the query timeout
 - allow_redirects (bool): True to enable / False to disable the redirection on pages
 - verify (Any): True to enable / False to disable the verification of ssl_certificate
+- stream (Any): Open a stream
 - certificate (str): To add a certificate
 - request_cooldown (float): Cooldown between each request
 

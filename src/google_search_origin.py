@@ -101,7 +101,7 @@ class GoogleSearchOrigin:
     dorks_define: list = None, dorks_stocks: list = None, dorks_phonebook: list = None, dorks_maps: list = None,
     dorks_book: list = None, dorks_movie: list = None, dorks_site: list = None, headers: dict = None,
     proxies: dict = None, cookies: dict = None, timeout: int = None, allow_redirects: bool = None,
-    verify: Any = True, certificate: Any = None, request_cooldown: float = None):
+    verify: Any = True, stream: Any = None, certificate: Any = None, request_cooldown: float = None):
         self.configuration = {}
 
         self.url: str = None
@@ -119,6 +119,7 @@ class GoogleSearchOrigin:
         self.allow_redirects: bool = None
         self.proxies: dict = {}
         self.verify: bool = None
+        self.stream: Any = None
         self.certificate: Any = None
         self.request_cooldown: float = 0
         self.last_request: time = None
@@ -135,6 +136,7 @@ class GoogleSearchOrigin:
         self.parameter_allow_redirects(allow_redirects)
         self.parameter_proxies(proxies)
         self.parameter_verify(verify)
+        self.parameter_stream(stream)
         self.parameter_certificate(certificate)
         self.parameter_request_cooldown(request_cooldown)
 
@@ -213,7 +215,8 @@ class GoogleSearchOrigin:
         (not self.last_request or time.time() - self.last_request >= self.request_cooldown)):
             self.last_request = time.time()
             self.response = requests.get(url=self.url, headers=self.headers, cookies=self.cookies, timeout=self.timeout,
-            allow_redirects=self.allow_redirects, proxies=self.proxies, verify=self.verify, cert=self.certificate)
+            allow_redirects=self.allow_redirects, proxies=self.proxies, verify=self.verify, stream=self.stream,
+            cert=self.certificate)
             if (self.response.status_code == 429):
                 self.is_violated = True
         else:
@@ -319,6 +322,12 @@ class GoogleSearchOrigin:
 
     def parameter_verify(self, verify: Any) -> None:
         self.verify = verify
+
+    def remove_parameter_stream(self) -> None:
+        self.stream = None
+
+    def parameter_stream(self, stream: str) -> None:
+        self.stream = stream
 
     def remove_parameter_certificate(self) -> None:
         self.certificate = None
