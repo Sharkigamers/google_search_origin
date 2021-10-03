@@ -271,6 +271,9 @@ class GoogleSearchOrigin:
     def get_reponse_raw(self) -> str:
         if (self.response):
             return self.response.raw
+    
+    def get_violation(self) -> bool:
+        return self.is_google_violated
 
     ####################################################################################################################
     #
