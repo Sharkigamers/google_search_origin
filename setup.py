@@ -21,7 +21,7 @@ with open('README.md', 'r', encoding='utf-8') as fh:
 
 setuptools.setup(
     name='google-search-origin',
-    version='1.1.2',
+    version='1.1.3',
     author='Da2ny',
     author_email='da2nydeveloper@gmail.com',
     description='Google Search Origin is used to search efficacy on Google. It is also used to scrap URL from google',
