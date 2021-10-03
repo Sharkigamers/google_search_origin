@@ -47,7 +47,7 @@ class GoogleSearchOrigin:
     #
 
     AUTHOR: str = 'Da2ny'
-    VERSION: str = '1.1.2'
+    VERSION: str = '1.1.3'
     VERSION_DATE: str = '2021-03-10'
     PROGRAM_NAME: str = 'Google Search Origin'
 
@@ -123,7 +123,7 @@ class GoogleSearchOrigin:
         self.request_cooldown: float = 0
         self.last_request: time = None
 
-        self.is_google_violated: bool = False
+        self.is_violated: bool = False
 
         self.response = None
 
@@ -209,13 +209,13 @@ class GoogleSearchOrigin:
         self.configuration.update(google_serach_yaml.Yaml().read_yaml(path))
 
     def request_url(self):
-        if (not self.is_google_violated and
+        if (not self.is_violated and
         (not self.last_request or time.time() - self.last_request >= self.request_cooldown)):
             self.last_request = time.time()
             self.response = requests.get(url=self.url, headers=self.headers, cookies=self.cookies, timeout=self.timeout,
             allow_redirects=self.allow_redirects, proxies=self.proxies, verify=self.verify, cert=self.certificate)
             if (self.response.status_code == 429):
-                self.is_google_violated = True
+                self.is_violated = True
         else:
             self.response = None
 
@@ -273,7 +273,7 @@ class GoogleSearchOrigin:
             return self.response.raw
     
     def get_violation(self) -> bool:
-        return self.is_google_violated
+        return self.is_violated
 
     ####################################################################################################################
     #
